@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
 
-        <title>Scrapple - get into details</title>
+        <title>ScrapInsta</title>
 
         <link rel="icon" href={logo.src} />
         <link
