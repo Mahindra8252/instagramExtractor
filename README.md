@@ -309,13 +309,16 @@ graph TB
 
 ### Dashboard Overview<img width="1827" height="915" alt="Screenshot 2025-10-02 035758" src="https://github.com/user-attachments/assets/90f0f757-2412-406e-acdc-1f3645af3e8f" />
 
-![Dashboard](https://via.placeholder.com/800x400/667eea/ffffff?text=Dashboard+Overview)
+<img width="1823" height="447" alt="Screenshot 2025-10-02 035819" src="https://github.com/user-attachments/assets/068db650-0429-4d3e-8c77-1cd4093d640e" />
 
 ### AI-Powered Post Analysis
-![Post Analysis](https://via.placeholder.com/800x400/f093fb/ffffff?text=AI+Post+Analysis)
+<img width="1622" height="810" alt="Screenshot 2025-10-02 040052" src="https://github.com/user-attachments/assets/9b521011-2579-45d4-902f-68f2bb24c59b" />
 
-### Audience Demographics
-![Demographics](https://via.placeholder.com/800x400/4facfe/ffffff?text=Audience+Demographics)
+### DATA
+<img width="1625" height="867" alt="Screenshot 2025-10-02 040106" src="https://github.com/user-attachments/assets/d039877e-4750-425e-9205-4d9cabe5ae0f" />
+
+<img width="1608" height="921" alt="Screenshot 2025-10-02 040119" src="https://github.com/user-attachments/assets/e4d5c289-5838-4243-b7b2-b9a6cfc689a1" />
+
 
 </div>
 
