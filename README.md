@@ -307,7 +307,8 @@ graph TB
 
 <div align="center">
 
-### Dashboard Overview
+### Dashboard Overview<img width="1827" height="915" alt="Screenshot 2025-10-02 035758" src="https://github.com/user-attachments/assets/90f0f757-2412-406e-acdc-1f3645af3e8f" />
+
 ![Dashboard](https://via.placeholder.com/800x400/667eea/ffffff?text=Dashboard+Overview)
 
 ### AI-Powered Post Analysis
@@ -345,7 +346,7 @@ graph TB
 ## 🚀 Deployment
 
 ### Live Demo
-🌐 **Production URL**: [https://ruthie-endocrinous-kolton.ngrok-free.dev/](https://ruthie-endocrinous-kolton.ngrok-free.dev/)
+🌐 **Production URL**: [https://ruthie-endocrinous-kolton.ngrok-free.dev/](https://kenley-laborious-michale.ngrok-free.dev/)
 
 ### Deploy Your Own
 
@@ -435,16 +436,14 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 
 <div align="center">
 
-**Built with ❤️ by [Subham Kumar](https://github.com/Subhamk2004)**
+**Built with by [Mahindra Kumar](https://github.com/Mahindra8252)**
 
-[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github)](https://github.com/Subhamk2004)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/yourprofile)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-green?style=for-the-badge&logo=google-chrome)](https://yourportfolio.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github)](https://github.com/Mahindra8252)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/mahindra8252)
 
 ### 💬 Get in Touch
-📧 Email: subhamrahar22@gmail.com  
-🐦 Twitter: [@yourhandle](https://twitter.com/yourhandle)  
-💼 Portfolio: [yourportfolio.com](https://yourportfolio.com)
+📧 Email: Mahindra8252@gmail.com
+💼 Portfolio: [yourportfolio.com](https://mahindra8252.github.io/Portfolio/)
 
 </div>
 
@@ -466,6 +465,6 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 
 **⭐ If you find this project helpful, please consider giving it a star! ⭐**
 
-[⬆ Back to Top](#-scrapple---instagram-analytics-platform)
+[⬆ Back to Top](#-scrapple-instagram)
 
 </div>
