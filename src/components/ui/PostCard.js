@@ -1,14 +1,15 @@
-import { Heart, MessageCircle, Sparkles } from "lucide-react";
+import { Heart, MessageCircle, Sparkles, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 function PostCard({ post, index }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   if (!post || !post.url) {
     return (
-      <div className="bg-errorbg border-2 border-error/20 rounded-3xl p-6 text-center">
-        <span className="text-error text-sm font-medium">Invalid post data</span>
+      <div className="bg-gradient-to-br from-red-500 to-pink-600 rounded-3xl p-6 text-center shadow-xl">
+        <span className="text-white text-sm font-semibold">Invalid post data</span>
       </div>
     );
   }
@@ -36,87 +37,104 @@ function PostCard({ post, index }) {
 
   return (
     <div className="group h-full">
-      <div className="bg-cardbg rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-hard shadow-soft border-2 border-s h-full flex flex-col">
+      <div className="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl shadow-xl border-2 border-white/20 h-full flex flex-col hover:scale-[1.02]">
         
-        <Link href={postLink} target="_blank" className="relative">
-          <div className="absolute top-3 right-3 z-10 flex gap-2">
-            {postQuality.length > 0 && (
-              <span className="bg-cardbg/95 backdrop-blur-sm text-textPurple px-3 py-1.5 rounded-full text-xs font-semibold border border-purple/30 shadow-medium">
+        <Link href={postLink} target="_blank" className="relative block">
+          {/* Quality Badge */}
+          {postQuality.length > 0 && (
+            <div className="absolute top-4 right-4 z-10">
+              <div className="bg-white/95 backdrop-blur-md text-purple-600 px-4 py-2 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5" />
                 {postQuality[0]}
-              </span>
-            )}
-          </div>
-          
-          {post.type === "image" ? (
-            <img
-              src={proxyUrl}
-              alt={`Instagram post ${index + 1}`}
-              className="w-full aspect-square object-cover"
-              loading="lazy"
-              onError={(e) => {
-                if (e.target.src !== post.url) {
-                  e.target.src = post.url;
-                } else {
-                  e.target.style.display = "none";
-                  e.target.nextElementSibling.style.display = "flex";
-                }
-              }}
-            />
-          ) : (
-            <video
-              src={proxyUrl}
-              controls
-              className="w-full aspect-square object-cover"
-              loading="lazy"
-              onError={(e) => {
-                if (e.target.src !== post.url) {
-                  e.target.src = post.url;
-                }
-              }}
-            />
-          )}
-
-          <div
-            className="w-full aspect-square bg-s flex items-center justify-center"
-            style={{ display: "none" }}
-          >
-            <div className="text-center text-texts">
-              <div className="text-3xl mb-2"></div>
-              <div className="text-sm">Image unavailable</div>
-            </div>
-          </div>
-
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5 bg-cardbg/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                <Heart className="w-4 h-4 text-textPurple fill-textPurple" />
-                <span className="text-textp text-sm font-semibold">{formatNumber(postLikes)}</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-cardbg/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                <MessageCircle className="w-4 h-4 text-textPurple" />
-                <span className="text-textp text-sm font-semibold">{formatNumber(postComments)}</span>
+            </div>
+          )}
+          
+          {/* Image/Video Container */}
+          <div className="relative bg-gradient-to-br from-purple-400 to-pink-400">
+            {post.type === "image" ? (
+              <>
+                {!imageLoaded && (
+                  <div className="w-full aspect-square flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+                <img
+                  src={proxyUrl}
+                  alt={`Instagram post ${index + 1}`}
+                  className={`w-full aspect-square object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  loading="lazy"
+                  onLoad={() => setImageLoaded(true)}
+                  onError={(e) => {
+                    if (e.target.src !== post.url) {
+                      e.target.src = post.url;
+                    } else {
+                      e.target.style.display = "none";
+                      e.target.nextElementSibling.style.display = "flex";
+                    }
+                  }}
+                />
+              </>
+            ) : (
+              <video
+                src={proxyUrl}
+                controls
+                className="w-full aspect-square object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  if (e.target.src !== post.url) {
+                    e.target.src = post.url;
+                  }
+                }}
+              />
+            )}
+
+            <div
+              className="w-full aspect-square bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center"
+              style={{ display: "none" }}
+            >
+              <div className="text-center text-white">
+                <div className="text-3xl mb-2">📷</div>
+                <div className="text-sm font-medium">Image unavailable</div>
+              </div>
+            </div>
+
+            {/* Engagement Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
+                  <Heart className="w-4 h-4 text-pink-500 fill-pink-500" />
+                  <span className="text-gray-900 text-sm font-bold">{formatNumber(postLikes)}</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
+                  <MessageCircle className="w-4 h-4 text-purple-600" />
+                  <span className="text-gray-900 text-sm font-bold">{formatNumber(postComments)}</span>
+                </div>
               </div>
             </div>
           </div>
         </Link>
 
-        <div className="p-5 space-y-4 flex-1 flex flex-col">
+        {/* Content Section with Gradient Background */}
+        <div className="p-5 space-y-4 flex-1 flex flex-col bg-gradient-to-b from-transparent to-black/20">
           
+          {/* Caption */}
           {postCaption && (
             <div className="space-y-1">
-              <p className="text-textp text-sm leading-relaxed line-clamp-2">
+              <p className="text-white text-sm leading-relaxed line-clamp-2 font-medium">
                 {postCaption}
               </p>
             </div>
           )}
 
+          {/* Vibes Section */}
           {postVibe.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              Vibes:
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-xs font-bold text-white/80 uppercase tracking-wider">Vibes</span>
               {postVibe.slice(0, 3).map((vibe, i) => (
                 <span
                   key={i}
-                  className="bg-purple/20 text-textPurple text-xs font-medium px-3 py-1 rounded-full border border-purple/30"
+                  className="bg-white/90 backdrop-blur-sm text-purple-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white"
                 >
                   {vibe}
                 </span>
@@ -124,12 +142,13 @@ function PostCard({ post, index }) {
             </div>
           )}
 
+          {/* Hashtags */}
           {postHashtags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {postHashtags.slice(0, 3).map((hashtag, i) => (
                 <span 
                   key={i} 
-                  className="text-xs text-texts hover:text-textPurple transition-colors font-medium"
+                  className="text-xs text-white hover:text-yellow-300 transition-colors font-semibold hover:underline cursor-pointer"
                 >
                   {hashtag.startsWith("#") ? hashtag : `#${hashtag}`}
                 </span>
@@ -137,25 +156,27 @@ function PostCard({ post, index }) {
             </div>
           )}
 
+          {/* AI Analysis */}
           {analysis && (
             <div className="mt-auto">
-              <div className="bg-s rounded-2xl p-4 border border-border-light">
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="w-4 h-4 text-textPurple" />
-                  <span className="text-xs font-semibold text-textPurple uppercase tracking-wide">
+              <div className="bg-white/90 backdrop-blur-md rounded-2xl p-4 border-2 border-white shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center shadow-md">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-xs font-bold text-purple-600 uppercase tracking-wide">
                     AI Insight
                   </span>
                 </div>
                 <p 
-                  className={`text-xs text-texts leading-relaxed ${!isExpanded && 'line-clamp-2'}`}
-                  onClick={() => setIsExpanded(!isExpanded)}
+                  className={`text-xs text-gray-700 leading-relaxed font-medium ${!isExpanded && 'line-clamp-2'}`}
                 >
                   {analysis}
                 </p>
                 {analysis.length > 100 && (
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="text-xs text-textPurple hover:text-hoverbg font-medium mt-2 transition-colors"
+                    className="text-xs text-purple-600 hover:text-purple-700 font-bold mt-2 transition-colors underline"
                   >
                     {isExpanded ? "Show less" : "Read more"}
                   </button>
@@ -164,10 +185,11 @@ function PostCard({ post, index }) {
             </div>
           )}
 
+          {/* Mood Badge */}
           {imageLevelAnalysis.mood && (
-            <div className="flex flex-col items-start justify-between px-3 py-2 bg-yellow/20 rounded-xl border border-yellow/40">
-              <span className="text-xs font-medium text-textp">Mood</span>
-              <span className="text-xs font-semibold text-texts">{imageLevelAnalysis.mood}</span>
+            <div className="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-md rounded-2xl border-2 border-white shadow-lg">
+              <span className="text-xs font-bold text-purple-600 uppercase tracking-wide">Mood</span>
+              <span className="text-sm font-bold text-orange-600">{imageLevelAnalysis.mood}</span>
             </div>
           )}
         </div>

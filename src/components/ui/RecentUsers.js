@@ -1,5 +1,5 @@
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
+import { Clock, Users, RefreshCw, ChevronRight, Sparkles } from "lucide-react";
 
 const RecentUsers = ({ onUserSelect, isVisible }) => {
   const [recentUsers, setRecentUsers] = useState([]);
@@ -11,10 +11,7 @@ const RecentUsers = ({ onUserSelect, isVisible }) => {
     try {
       const response = await fetch("/api/database/recent");
       const data = await response.json();
-
-      if (data.success) {
-        setRecentUsers(data.users || []);
-      }
+      if (data.success) setRecentUsers(data.users || []);
     } catch (error) {
       console.error("Error fetching recent users:", error);
     } finally {
@@ -23,159 +20,187 @@ const RecentUsers = ({ onUserSelect, isVisible }) => {
   };
 
   useEffect(() => {
-    if (isVisible) {
-      fetchRecentUsers();
-    }
+    if (isVisible) fetchRecentUsers();
   }, [isVisible]);
 
-  const handleUserClick = (username) => {
-    onUserSelect(username);
-  };
+  const handleUserClick = (username) => onUserSelect(username);
+  const handleImageError = (username) => setImageErrors(prev => new Set([...prev, username]));
 
-  const handleImageError = (username) => {
-    setImageErrors(prev => new Set([...prev, username]));
-  };
-
-  if (!isVisible) {
-    return null;
-  }
-//   console.log(recentUsers);
+  if (!isVisible) return null;
 
   return (
-    <div className="max-w-4xl mx-auto mb-8 pb-10">
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-500 to-blue-600 px-6 py-4">
-          <div className="flex items-center gap-2">
-            <svg
-              className="w-5 h-5 text-black"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <h3 className="text-black font-semibold text-lg">
-              Recently Analyzed Profiles
-            </h3>
+    <div className="max-w-6xl mx-auto mb-10 px-4">
+      <div className="relative">
+        {/* Glow Effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] rounded-3xl blur-xl opacity-20"></div>
+        
+        {/* Main Container */}
+        <div className="relative bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+          {/* Header */}
+          <div className="relative bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
+                  <Clock className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-xl flex items-center gap-2">
+                    Recently Analyzed
+                    <Sparkles className="w-5 h-5" />
+                  </h3>
+                  <p className="text-white/90 text-sm mt-0.5">
+                    Click on any profile to view their analytics
+                  </p>
+                </div>
+              </div>
+              {recentUsers.length > 0 && (
+                <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                  <Users className="w-4 h-4 text-white" />
+                  <span className="text-white font-semibold text-sm">
+                    {recentUsers.length} profile{recentUsers.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-          <p className="text-purple-100 text-sm mt-1">
-            Click on any username to view their analysis
-          </p>
-        </div>
 
-        <div className="p-6">
-          {loading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-              <span className="ml-3 text-gray-600">
-                Loading recent profiles...
-              </span>
-            </div>
-          ) : recentUsers.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {recentUsers.map((user, index) => (
-                <button
-                  key={user.username || index}
-                  onClick={() => handleUserClick(user.username)}
-                  className="group bg-gray-50 hover:bg-purple-50 border border-gray-200 hover:border-purple-300 rounded-xl p-4 text-left transition-all duration-200 transform hover:scale-105 hover:shadow-md"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm overflow-hidden">
-                      {user.userData?.profile?.profilePicture && !imageErrors.has(user.username) ? (
-                        <img
-                          src={`/api/proxy-image?url=${encodeURIComponent(user.userData.profile.profilePicture)}`}
-                          alt={user.username}
-                          className="w-10 h-10 rounded-full object-cover"
-                          onError={() => handleImageError(user.username)}
-                        />
-                      ) : (
-                        <span className="text-white font-semibold text-sm">
-                          {user.username?.charAt(0)?.toUpperCase() || 'U'}
-                        </span>
+          {/* Content */}
+          <div className="p-8">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="relative">
+                  <div className="w-16 h-16 border-4 border-gray-200 border-t-[#833ab4] rounded-full animate-spin"></div>
+                  <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-b-[#fd1d1d] rounded-full animate-spin animation-delay-150"></div>
+                </div>
+                <span className="mt-4 text-gray-600 font-medium">
+                  Loading recent profiles...
+                </span>
+              </div>
+            ) : recentUsers.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {recentUsers.map((user, index) => (
+                  <button
+                    key={user.username || index}
+                    onClick={() => handleUserClick(user.username)}
+                    className="group relative overflow-hidden bg-gradient-to-br from-white to-gray-50 hover:from-[#fdf0f5] hover:to-[#fde2f1] border-2 border-gray-200 hover:border-[#fd1d1d] rounded-2xl p-5 text-left transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                  >
+                    {/* Hover Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#833ab4]/0 via-[#fd1d1d]/0 to-[#fcb045]/0 group-hover:from-[#833ab4]/10 group-hover:via-[#fd1d1d]/10 group-hover:to-[#fcb045]/10 transition-all duration-300"></div>
+
+                    <div className="relative">
+                      {/* Avatar */}
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="relative">
+                          <div className="absolute -inset-1 bg-gradient-to-r from-[#833ab4] to-[#fd1d1d] rounded-full blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                          <div className="relative w-14 h-14 bg-gradient-to-br from-[#833ab4] to-[#fd1d1d] rounded-full flex items-center justify-center overflow-hidden ring-2 ring-white shadow-lg">
+                            {user.userData?.profile?.profilePicture && !imageErrors.has(user.username) ? (
+                              <img
+                                src={`/api/proxy-image?url=${encodeURIComponent(user.userData.profile.profilePicture)}`}
+                                alt={user.username}
+                                className="w-full h-full object-cover"
+                                onError={() => handleImageError(user.username)}
+                              />
+                            ) : (
+                              <span className="text-white font-bold text-lg">
+                                {user.username?.charAt(0)?.toUpperCase() || 'U'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-gray-900 group-hover:text-[#fd1d1d] truncate text-base transition-colors">
+                            @{user.username}
+                          </p>
+                          <div className="flex items-center gap-1 mt-1">
+                            <Clock className="w-3 h-3 text-gray-400" />
+                            <p className="text-xs text-gray-500 group-hover:text-[#fd1d1d] transition-colors">
+                              {new Date(user.updatedAt).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Stats */}
+                      {user.userData?.profile && (
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-200 group-hover:border-[#fd1d1d] transition-colors">
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 font-medium">Posts</p>
+                            <p className="text-sm font-bold text-gray-900">
+                              {user.userData.profile.posts || 0}
+                            </p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 font-medium">Followers</p>
+                            <p className="text-sm font-bold text-gray-900">
+                              {user.userData.profile.followers ? 
+                                (user.userData.profile.followers > 999 ? 
+                                  `${(user.userData.profile.followers / 1000).toFixed(1)}K` : 
+                                  user.userData.profile.followers) : 
+                                '0'}
+                            </p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 font-medium">Following</p>
+                            <p className="text-sm font-bold text-gray-900">
+                              {user.userData.profile.following || 0}
+                            </p>
+                          </div>
+                        </div>
                       )}
-                    </div>
 
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 group-hover:text-purple-700 truncate">
-                        @{user.username}
-                      </p>
-                      <p className="text-xs text-gray-500 group-hover:text-purple-600">
-                        {new Date(user.updatedAt).toLocaleDateString()}
-                      </p>
+                      {/* Arrow */}
+                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-1">
+                        <div className="p-1.5 bg-gradient-to-r from-[#833ab4] to-[#fd1d1d] rounded-lg shadow-lg">
+                          <ChevronRight className="w-4 h-4 text-white" />
+                        </div>
+                      </div>
                     </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16">
+                <div className="relative inline-block">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#833ab4] to-[#fd1d1d] rounded-full blur-2xl opacity-20"></div>
+                  <div className="relative p-6 bg-white rounded-full">
+                    <Users className="w-16 h-16 text-gray-400" />
                   </div>
+                </div>
+                <p className="text-gray-600 font-semibold text-lg mt-6">No profiles analyzed yet</p>
+                <p className="text-gray-400 text-sm mt-2 max-w-md mx-auto">
+                  Recent profiles will appear here after analysis. Start by searching for an Instagram username above!
+                </p>
+              </div>
+            )}
+          </div>
 
-                  <div className="mt-2 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                    <svg
-                      className="w-4 h-4 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <svg
-                className="w-12 h-12 text-gray-300 mx-auto mb-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          {/* Footer */}
+          {recentUsers.length > 0 && (
+            <div className="bg-gray-50 px-8 py-4 border-t border-gray-200">
+              <button
+                onClick={fetchRecentUsers}
+                disabled={loading}
+                className="group flex items-center gap-2 text-sm font-semibold text-[#833ab4] hover:text-[#fd1d1d] disabled:text-gray-400 transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1}
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              <p className="text-gray-500">No profiles analyzed yet</p>
-              <p className="text-gray-400 text-sm mt-1">
-                Recent profiles will appear here after analysis
-              </p>
+                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+                <span>{loading ? 'Refreshing...' : 'Refresh List'}</span>
+              </button>
             </div>
           )}
         </div>
-
-        {recentUsers.length > 0 && (
-          <div className="bg-gray-50 px-6 py-3 border-t border-gray-200">
-            <button
-              onClick={fetchRecentUsers}
-              disabled={loading}
-              className="text-sm text-purple-600 hover:text-purple-800 font-medium flex items-center gap-1 transition-colors"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-              Refresh List
-            </button>
-          </div>
-        )}
       </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        .animation-delay-150 { animation-delay: 150ms; }
+      `}</style>
     </div>
   );
 };
